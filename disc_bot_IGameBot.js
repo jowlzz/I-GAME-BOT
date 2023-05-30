@@ -1,19 +1,22 @@
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Client, Intents } from 'discord.js';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const client = new Client({ 
   intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MEMBERS,
+    Intents.FLAGS.GUILD_PRESENCES // Added GUILD_PRESENCES intent
   ]
 });
-const TOKEN = 'MTExMjcxMjY0MTAzOTgyNjk5NA.GiXwpz.gUMJLEv2kVqN3m6b2tbXI-r-YVAyGDfvqCCK_g';
+const TOKEN = process.env.bot_token;
 const ROLE_NAME = 'I GAME';
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
 });
 
-client.on('presence', (oldPresence, newPresence) => {
+client.on('presenceUpdate', (oldPresence, newPresence) => {
   const member = newPresence.member;
   const game = newPresence.activities.find(activity => activity.type === 'PLAYING');
 
